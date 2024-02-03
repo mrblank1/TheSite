@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{%load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <!-- Main Wrapper Start -->
+        <div class="wrapper">
+            <!-- Header Start -->
+            
+            <!-- Breadcrumb area Start -->
+            <div class="breadcrumb-area bg-color ptb--90" data-bg-color="#f6f6f6">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center flex-sm-row flex-column">
+                                <h1 class="page-title">Login &amp; Register</h1>
+                                <ul class="breadcrumb">
+                                    <li><a href="{% url 'website:index'%}">Home</a></li>
+                                    <li class="current"><span>Login &amp; Register</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Breadcrumb area End -->
+    
+            <!-- Main Content Wrapper Start -->
+            <div class="main-content-wrapper">
+                <div class="page-content-inner pt--75 pb--80">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 mb-sm--50">
+                                <div class="login-box">
+                                    <h3 class="heading__tertiary mb--30">Login</h3>
+                                    <form class="form form--login" action="{% url 'accounts:log' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="form_name" value="form" />
+                                        <div class="form__group mb--20">
+                                            <label class="form__label form__label--2" for="username_email">Username or email address <span class="required">*</span></label>
+                                            <input type="text" class="form__input form__input--2"  name="username">
+                                        </div>
+                                        <div class="form__group mb--20">
+                                           <label class="form__label form__label--2" for="login_password">Password <span class="required">*</span></label>
+                                            <input type="password" class="form__input form__input--2"  name="password">
+                                        </div>
+                                        {{form.captcha}}
+                                        <div class="d-flex align-items-center mb--20">
+                                            <div class="form__group mr--30">
+                                                <input type="submit" value="Log in" class="btn-submit">
+                                            </div>
+                                            <div class="form__group">
+                                                
+                                            </div>
+                                        </div>
+                                        <a class="forgot-pass" href="{% url 'accounts:reset_password' %}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; transition: background-color 0.3s;">
+                                            Lost your password?
+                                        </a>
+                                                                            </form>
+                                    <div >{% if messages %}
+                                        {% for message in messages %}
+                                         <p>{{ message }}</p>
+                                        
+                                        {% endfor %}
+                                        
+                                        {% endif %}</div>
+                                </div>
+                            </div>
+                            {% if not user.is_authenticated %}
+                            <div class="col-md-6">
+                                <div class="register-box">
+                                    <h4 class="heading__tertiary mb--30">Register</h4>
+                                    <form class="form form--login" action="{% url 'accounts:log' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="form_name" value="form1" />
+                                        <div class="form__group mb--20">
+                                            <label class="form__label form__label--2" for="username_email">Username<span class="required">*</span></label>
+                                            <input type="text" class="form__input form__input--2"  name="username">
+                                        </div>
+                                        <div class="form__group mb--20">
+                                            <label class="form__label form__label--2" for="email">Email address <span class="required">*</span></label>
+                                            <input type="email" class="form__input form__input--2"  name="email">
+                                        </div>
+                                        <div class="form__group mb--20">
+                                           <label class="form__label form__label--2" for="register_password">Password <span class="required">*</span></label>
+                                            <input type="password" class="form__input form__input--2"  name="password1">
+                                        </div>
+                                        <div class="form__group mb--20">
+                                            <label class="form__label form__label--2" for="register_password">Confirm Password <span class="required">*</span></label>
+                                             <input type="password" class="form__input form__input--2"  name="password2">
+                                         </div>
+                                         {{form.captcha}}
+                                        <div class="form__group">
+                                            <input type="submit" value="Register" class="btn btn-submit btn-style-1">
+                                        </div>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Content Wrapper Start -->
+    
+         
+    
+            
+        </div>
+        <!-- Main Wrapper End -->
+</body>
+</html>
+ 
+{% endblock %}

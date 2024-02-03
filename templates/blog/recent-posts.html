@@ -1,0 +1,20 @@
+
+{% load static %}
+
+<div class="recent-post">
+    {% for post in posts %}
+    <div class="recent-post__item">
+        <div class="recent-post__thumb">
+            <a href="{% url 'blog:single' pid=post.pk %}">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}">
+            </a>
+        </div>
+        <div class="recent-post__content">
+            <h3 class="recent-post__title text-truncate">
+                <a href="{% url 'blog:single' pid=post.pk %}">{{ post.title }}</a>
+            </h3>
+            <span class="recent-post__meta">{{ post.published_date|date:"F d, Y" }}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load website_filters %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <!-- Main Content Wrapper Start -->
+     <div class="main-content-wrapper">
+        <div class="page-content-inner ptb--80">
+            <div class="container">
+                <div class="row mb--75">
+                    <div class="col-lg-8 col-xl-9 order-lg-2 mb-md--50">
+                        <div class="single-post">
+                            <!-- Single Blog Start Here -->
+                                <article class="single-post-details">
+                                    <div class="entry-header">
+                                        <h2 class="entry-title">{{post.title}}</h2>
+                                        <div class="entry-meta mb--30">
+                                            <a href="{% url 'blog:index' %}" class="posted-on">{{post.published_date}}</a>
+                                            <span class="meta-separator">-</span>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="entry-media">
+                                        <div class="image">
+                                            <img src="{{post.image.url}}" alt="Post Thumbnail">
+                                        </div>
+                                    </div>
+                                
+                                    <div class="entry-footer-meta">
+                                        <div class="tag-list">
+                                            <span>
+                                                <i class="fa fa-tags"></i>
+                                                
+                                            </span>
+                                            <span>
+                                
+                                                {% for cat in post.category.all %}
+                                            <a href="{% url 'blog:category' cat_name=cat.name %}">{{ cat.name }}{% if not forloop.last %},{% endif %}</a>
+                                            {% endfor %}	
+                                            
+                                        </div>
+                                    </span>
+                                    <span>        Counted views:{{post.counted_views}}</span>
+                                        <div class="author">
+                                            <span>
+                                                Author: <a href="{% url 'blog:author' aut_name=post.author.username%}">{{post.author}}</a>
+                                            </span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div style="margin: 20px 0; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
+                                        {{ post.content | safe }}
+                                    </div>
+                            </article>
+                            <!-- Single Blog End Here -->
+
+                            
+                            <!-- Post Navigation Start Here -->
+                            <div class="navigation-area">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                                        {% if prev_next.previous %}
+                                        <!-- Previous Post -->
+                                        <div class="thumb">
+                                            <a href="{% url 'blog:single' pid=prev_next.previous.id %}">
+                                                <img class="img-fluid" src="{{ prev_next.previous.image.url }}" alt="{{ prev_next.previous.title }}" style="width: 200px; height: 200px;">
+                                            </a>
+                                        </div>
+                                        <div class="arrow">
+                                            <a href="{% url 'blog:single' pid=prev_next.previous.id %}">
+                                                <span class="lnr text-white lnr-arrow-left"></span>
+                                            </a>
+                                        </div>
+                                        <div class="detials">
+                                            <p>Prev Post</p>
+                                            <a href="{% url 'blog:single' pid=prev_next.previous.id %}">
+                                                <h4>{{ prev_next.previous.title }}</h4>
+                                            </a>
+                                            <span class="nav-links__meta">
+                                                <!-- You can display the post date and author here -->
+                                            </span>
+                                        </div>
+                                        {% else %}
+                                        <!-- No Previous Post -->
+                                        <div class="thumb">
+                                            <!-- Add your image for the "No Previous Post" scenario -->
+                                        </div>
+                                        <div class="arrow">
+                                            <!-- Add your link or action for the "No Previous Post" scenario -->
+                                        </div>
+                                        <div class="detials">
+                                            <p>Prev Post</p>
+                                            <h4>No previous post</h4>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                        {% if prev_next.next %}
+                                        <!-- Next Post -->
+                                        <div class="detials">
+                                            <p>Next Post</p>
+                                            <a href="{% url 'blog:single' pid=prev_next.next.id %}">
+                                                <h4>{{ prev_next.next.title }}</h4>
+                                            </a>
+                                            <span class="nav-links__meta">
+                                                <!-- You can display the post date and author here -->
+                                            </span>
+                                        </div>
+                                        <div class="arrow">
+                                            <a href="{% url 'blog:single' pid=prev_next.next.id %}">
+                                                <span class="lnr text-white lnr-arrow-right"></span>
+                                            </a>
+                                        </div>
+                                        <div class="thumb">
+                                            <a href="{% url 'blog:single' pid=prev_next.next.id %}">
+                                                <img class="img-fluid" src="{{ prev_next.next.image.url }}" alt="{{ prev_next.next.title }}" style="width: 200px; height: 200px;">
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <!-- No Next Post -->
+                                        <div class="detials">
+                                            <p>Next Post</p>
+                                            <h4>No next post</h4>
+                                        </div>
+                                        <div class="arrow">
+                                            <!-- Add your link or action for the "No Next Post" scenario -->
+                                        </div>
+                                        <div class="thumb">
+                                            <!-- Add your image for the "No Next Post" scenario -->
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Post Navigation Start Here -->
+                            
+                            <!-- Comments Start Here -->
+                            <div class="comments-area">
+                                <div class="comment">
+                                    <ul class="comment-list">
+                                        <li>{% for comment in comments %}
+                                            <div class="single-comment">
+                                                <div class="comment-avatar">
+                                                    <img src="{% static 'assets/img/blog/download.jpeg' %}" alt="comment">
+                                                </div>
+                                                <div class="comment-info">
+                                                    <div class="comment-meta">
+                                                        <h5 class="comment-author">{{comment.name}}</h5>
+                                                        <span class="comment-date">{{comment.created_date|naturalday}}</span>
+                                                        
+                                                    </div>
+                                                    <div class="comment-content">
+                                                        <p>{{comment.message}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% empty %}
+                                            <div class="single-comment"><p>no commennts here</p></div>
+                                            {% endfor %}
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="comment-respond">
+                                    {% if user.is_authenticated %}
+                                    <form action="{% url 'blog:single' %}" method="post" class="form comment-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="post" value="{{post.id}}" />
+                                        <div class="form-notes mb--20">
+                                            <p><em>Your email address will not be published. Required fields are marked</em> <span class="required">*</span></p>
+                                        </div>
+                                        <div class="form__group mb--30 mb-sm--20">
+                                            <div class="form-row">
+                                                <div class="col-md-4 mb-sm--20">
+                                                    <label class="form__label form__label--3" for="comment_name">Name<span class="required">*</span></label>
+                                                    <input type="text" name="name" class="form__input" value="{{ user.username }}">
+                                                </div>  
+                                                <div class="col-md-4">
+                                                    <label class="form__label form__label--3" for="comment_website">Subject</label>
+                                                    <input type="text" name="subject"  class="form__input">
+                                                </div>
+                                                <div class="col-md-4 mb-sm--20">
+                                                    <label class="form__label form__label--3" for="comment_email">Email<span class="required">*</span></label>
+                                                    <input type="email" name="email"  class="form__input" value="{{ user.email }}">
+                                                </div> 
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="form__group mb--30 mb-sm--20">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <label class="form__label form__label--3" for="review">Your Review<span class="required">*</span></label>
+                                                    <textarea name="message"  class="form__input form__input--textarea"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form__group">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <input type="submit" value="Submit Now" class="btn-submit">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div >{% if messages %}
+                                            {% for message in messages %}
+                                             <p>{{ message }}</p>
+                                            
+                                            {% endfor %}
+                                            
+                                            {% endif %}</div>
+                                    </form>
+                                    {% else%}
+                                    <form action="{% url 'blog:single' %}" method="post" class="form comment-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="post" value="{{post.id}}" />
+                                        <div class="form-notes mb--20">
+                                            <p><em>Your email address will not be published. Required fields are marked</em> <span class="required">*</span></p>
+                                        </div>
+                                        <div class="form__group mb--30 mb-sm--20">
+                                            <div class="form-row">
+                                                <div class="col-md-4 mb-sm--20">
+                                                    <label class="form__label form__label--3" for="comment_name">Name<span class="required">*</span></label>
+                                                    <input type="text" name="name" class="form__input">
+                                                </div>  
+                                                <div class="col-md-4">
+                                                    <label class="form__label form__label--3" for="comment_website">Subject</label>
+                                                    <input type="text" name="subject"  class="form__input">
+                                                </div>
+                                                <div class="col-md-4 mb-sm--20">
+                                                    <label class="form__label form__label--3" for="comment_email">Email<span class="required">*</span></label>
+                                                    <input type="email" name="email"  class="form__input">
+                                                </div> 
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="form__group mb--30 mb-sm--20">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <label class="form__label form__label--3" for="review">Your Review<span class="required">*</span></label>
+                                                    <textarea name="message"  class="form__input form__input--textarea"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form__group">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <input type="submit" value="Submit Now" class="btn-submit">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div >{% if messages %}
+                                            {% for message in messages %}
+                                             <p>{{ message }}</p>
+                                            
+                                            {% endfor %}
+                                            
+                                            {% endif %}</div>
+                                    </form>
+                                    {%endif %}
+                                </div>
+                            </div>
+                            <!-- Comments Start Here -->
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 order-lg-1">
+                        <div class="sidebar-inner">
+                            <div class="widget blog-widget widget-categories mb--40">
+                                <h3 class="widget-title mb--25">Categories</h3>
+                                <ul>
+                                    {% for cat in categories %}
+                                    <li>
+                                        <a href="{% url 'blog:category' cat_name=cat.name %}">
+                                            <span>{{ cat.name }}</span>
+                                        </a>
+                                    </li>
+                                    {% if not forloop.last %},{% endif %}
+                                    {% endfor %}
+                                </ul>
+                            
+                            </div>
+                            <div class="widget blog-widget widget-recent-posts mb--40">
+                                <h3 class="widget-title mb--25">Recent Post</h3>
+                                {% recent_posts %}
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <!-- Main Content Wrapper Start -->
+
+</body>
+</html>
+{% endblock %}

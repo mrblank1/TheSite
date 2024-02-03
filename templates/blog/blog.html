@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% load website_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main-content-wrapper">
+            <div class="page-content-inner blog-page-sidebar ptb--80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-9 col-lg-8 order-lg-2 mb-md--50">
+                            <div class="row">
+                            
+                                {% for post in posts %}
+                                <div class="col-md-6 mb--50">
+                                    <article class="blog blog-style-2">
+                                        <div class="blog-media">
+                                            <figure class="image">
+                                                <a href="{% url 'blog:single' pid=post.id  %}">
+                                                    <img src="{{post.image.url}}" alt="Blog">
+                                                </a>
+                                            </figure>
+                                        </div>
+                                        <div class="blog-info">
+                                            <span>views:{{post.counted_views}}</span>
+                                            <h2 class="blog-title">
+                                                {{post.title}}
+                                                <a href="{% url 'blog:single' pid=post.id  %}">{{post.i}}</a>
+                                            </h2>
+                                            <div class="blog-meta">
+                                                <div class="blog-meta--left">
+                                                    <p>{{post.author}}</p>
+                                                    <p>{{ post.content|striptags|truncatewords:10 }}</p>
+                                                    
+                                                </div>
+                                                <div class="blog-meta--right">
+                                                    
+                                                    <a href="{% url 'blog:single' pid=post.id  %}" class="btn btn-no-bg btn-color-dark">Read More <i class="fa fa-angle-double-right"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                                {% endfor %}
+                                    
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <nav class="pagination-wrap">
+                                        <ul class="pagination">
+                                            {% if posts.has_previous %}
+                                            <li><a href="?page={{ posts.previous_page_number }}" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
+                                            {%endif %}
+                                            {% if posts.has_previous %}
+
+                                            <li><a  href="?page={{ posts.previous_page_number }}" ><span class="page-number">{{ posts.previous_page_number }}</span></a></li>
+                                            {% endif %}
+                                            <li><a  class="current page-number">{{ posts.number }}</a></li>
+                                            {% if posts.has_next %}
+                                            <li><a href="?page={{ posts.next_page_number }}" class="page-number">{{ posts.next_page_number }}</a></li>
+                                            {% endif %}
+                                            {% if posts.has_next %}
+                                            <li><a href="?page={{ posts.next_page_number }}" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 order-lg-1">
+                            <div class="sidebar-inner">
+                                <div class="widget blog-widget widget-categories mb--40">
+                                    <h3 class="widget-title mb--25">Categories</h3>
+                                    <ul>
+                                        {% for cat in categories %}
+                                        <li>
+                                            <a href="{% url 'blog:category' cat_name=cat.name %}">
+                                                <span>{{ cat.name }}</span>
+                                            </a>
+                                        </li>
+                                        {% if not forloop.last %},{% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                
+                                </div>
+                                <div class="widget blog-widget widget-recent-posts mb--40">
+                                    <h3 class="widget-title mb--25">Recent Post</h3>
+                                    {% recent_posts %}
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Content Wrapper End -->
+
+</body>
+</html>
+{% endblock %}
